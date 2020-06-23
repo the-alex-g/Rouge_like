@@ -9,9 +9,6 @@ var screensize:Vector2 = Vector2.ZERO
 func _ready():
 	screensize = get_viewport_rect().size
 
-func _draw():
-	draw_circle(self.position, 10, Color.silver)
-
 func _process(delta):
 	var _velocity:Vector2 = Vector2.ZERO
 	if Input.is_action_pressed("ui_down"):
