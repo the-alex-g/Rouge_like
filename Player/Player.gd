@@ -14,7 +14,7 @@ onready var _jumptimer := $JumpTimer
 func _ready():
 	_base_grav = grav_strength
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	var _velocity := Vector2.ZERO
 	if Input.is_action_pressed("Right"):
 		_velocity.x += 1
