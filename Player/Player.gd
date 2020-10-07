@@ -10,6 +10,7 @@ var _jump = false
 var _base_grav := 0
 onready var _sprite := $AnimatedSprite
 onready var _jumptimer := $JumpTimer
+onready var _floordetector := $RayCast2D
 
 func _ready():
 	_base_grav = grav_strength
@@ -20,10 +21,13 @@ func _physics_process(_delta):
 		_velocity.x += 1
 	if Input.is_action_pressed("Left"):
 		_velocity.x -= 1
-	if Input.is_action_just_pressed("Jump") and not _jump:# and is_on_floor():
+	if Input.is_action_just_pressed("Jump") and not _jump and _floordetector.is_colliding():
 		_jump = true
 		_jumptimer.start(jumptime)
-	var _error = move_and_slide(_calculate_velocity(_velocity))
+	var dir:Vector2 = _calculate_velocity(_velocity)
+	var _error = move_and_slide(dir, Vector2.UP)
+	var _next_anim:String = _get_next_anim(dir)
+	_sprite.play(_next_anim)
 
 func _calculate_velocity(velocity:Vector2):
 	var dir := velocity
@@ -41,6 +45,20 @@ func _calculate_velocity(velocity:Vector2):
 		dir.y *= jump_strength
 	dir.x *= speed
 	return dir
+
+func _get_next_anim(dir:Vector2):
+	var next_anim := ""
+	if dir.x == 0:
+		next_anim = "Idle"
+	elif dir.x != 0:
+		next_anim = "Run"
+		if dir.x > 0:
+			_sprite.flip_h = false
+		elif dir.x < 0:
+			_sprite.flip_h = true
+	if not _floordetector.is_colliding():
+		next_anim = "Airborne"
+	return next_anim
 
 func _on_JumpTimer_timeout():
 	_jump = false
