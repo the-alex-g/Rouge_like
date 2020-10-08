@@ -53,9 +53,9 @@ func _get_next_anim(dir:Vector2):
 	elif dir.x != 0:
 		next_anim = "Run"
 		if dir.x > 0:
-			_sprite.flip_h = false
+			_sprite.scale.x = 1
 		elif dir.x < 0:
-			_sprite.flip_h = true
+			_sprite.scale.x = -1
 	if not _floordetector.is_colliding():
 		next_anim = "Airborne"
 	return next_anim
