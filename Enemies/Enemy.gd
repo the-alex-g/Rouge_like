@@ -5,7 +5,7 @@ onready var right := $Right
 onready var animation := $AnimationPlayer
 onready var sprite := $Sprite
 var go_left := false
-var speed := 100.0
+var speed := 50.0
 
 func _ready():
 	var start_dir = randi()%2
@@ -13,6 +13,7 @@ func _ready():
 		go_left = false
 	else:
 		go_left = true
+	animation.play("Walk")
 
 func _physics_process(_delta):
 	var velocity := Vector2.ZERO
@@ -29,3 +30,4 @@ func _physics_process(_delta):
 		velocity.x += 1
 		sprite.scale.x = 1
 	var _error = move_and_slide(velocity*speed)
+
